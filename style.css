@@ -1,0 +1,97 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 20px;
+}
+
+.container {
+    background: grey;
+    width: 350px;
+    height: 400px;
+    margin: 0 auto;
+    padding: .2rem 0;
+    margin-top: 4rem;
+    border-radius: 8px;
+}
+.interface {
+    width: 95%;
+    margin: 0 auto;
+    height: 100%;
+}
+.input-interface {
+    background: black;
+    width: 85%;
+    margin: 0.5rem auto;
+    text-align: end;
+    padding: 1rem .6rem;
+    border-radius: 5px;
+    font-size: 1.55rem;
+}
+.input-btns {
+    width: 90%;
+    margin: 0 auto;
+    height: 80%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 5px;
+}
+.top-btns {
+    padding: .3rem;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-color: transparent;
+}
+.numbers {
+    color: crimson;
+}
+.signs, .negPos {
+    color: royalblue;
+}
+.clear {
+    grid-column-start: 1;
+    grid-column-end: span 2;
+}
+.negative {
+    grid-column-end: span 2;
+}
+.btn, .point,
+.signs, .equal {
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-color: transparent;
+}
+.fas {
+    pointer-events: none;
+}
+.start, .end {
+    display: none;
+}
+.top-btns, .btn,
+.sign, .signs, .point {
+    background: #242424;
+    transition: background;
+}
+.top-btns:hover, .btn:hover,
+.sign:hover, .signs:hover,
+.point:hover {
+    background: #303030;
+}
+.top-btns:active {
+    background: white;
+}
+.btn:active {
+    background: white;
+}
+.sign:active {
+    background: white;
+}
+.signs:active {
+    background: white;
+}
+.point:active {
+    background: white;
+}
+
+
