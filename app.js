@@ -36,71 +36,83 @@ add.addEventListener("click", addition);
 
 // Functions
 function operate(e) {
-    e.preventDefault();
-    
-    console.log(Math.sign(interface.innerText))
-    console.log(Number(fValue.value) + Number(sValue.value));
     if (sign === "Divide") {
-        console.log(sign)
-        interface.innerText = Number(fValue.value) / Number(sValue.value);
+        interface.innerText = Math.round(Number(fValue.value) / Number(sValue.value) * 1000) / 1000; // Rounds numbers to the third place
         calculated = true;
     }
     if (sign === "Multiply") {
-        console.log(sign)
-        interface.innerText = Number(fValue.value) * Number(sValue.value);
+        interface.innerText = Math.round(Number(fValue.value) * Number(sValue.value) * 1000) / 1000;
         calculated = true;
     }
     if (sign === "Subtract") {
-        console.log(sign)
         interface.innerText = Number(fValue.value) - Number(sValue.value);
         calculated = true;
     }
     if (sign === "Addition") {
-        console.log(sign)
         interface.innerText = Number(fValue.value) + Number(sValue.value);
         calculated = true;
     }
 }
 function numKeys(keys) {
-    if (Number(keys.key)) {
-      console.log(keys.keyCode)  
-    }
-    if (interface.innerText == "0") {
+    if (interface.innerText == "0" && keys.keyCode > 48 && keys.keyCode < 58) {
         interface.innerText = keys.key;
         fValue.value += keys.key;
-    } else if (!interface.innerText == "0" && switchFunc == false) {
+    } else if (!interface.innerText == "0" && switchFunc == false && keys.keyCode > 48 && keys.keyCode < 58) {
         interface.innerText += keys.key;
         fValue.value += keys.key;
-    }
-    else if (sValue.value === "" && keys.keyCode >= 49 && keys.keyCode <= 57) {
+    } else if (sValue.value === "" && switchFunc == true && keys.keyCode > 48 && keys.keyCode < 58) {
         interface.innerText = keys.key;
         sValue.value += keys.key;
         valueBtns.forEach((btns) => {
             btns.removeEventListener("click", valueInputs);
-            console.log("First Removed");
             switchFunc = true;
             secondBtns.forEach((btns) => {
             btns.addEventListener("click", sValueBtns);
             })
         })
-    } else {
+    } else if (keys.keyCode > 48 && keys.keyCode < 58) {
         interface.innerText += keys.key;
         sValue.value += keys.key;
     }
 
-    if (interface.innerText.length > 22) {
+    if (keys.keyCode === 13 && fValue.value !== "" && sValue.value !== "") {
+        switch (sign) { 
+            case "Multiply":
+                interface.innerText = Math.round(Number(fValue.value) * Number(sValue.value) * 1000) / 1000;
+                fValue.value = interface.innerText;
+                sValue.value = "";
+                sign = multiply.value;
+                sTransition = false;
+                break;
+            case "Subtract":
+                interface.innerText = Number(fValue.value) - Number(sValue.value);
+                fValue.value = interface.innerText;
+                sValue.value = "";
+                sign = subtract.value;
+                sTransition = false;
+                break;
+            case "Addition":
+                interface.innerText = Number(fValue.value) + Number(sValue.value);
+                fValue.value = interface.innerText;
+                sValue.value = "";
+                sign = add.value;
+                sTransition = false;
+                break;
+            case "Divide":
+                interface.innerText = Math.round(Number(fValue.value) / Number(sValue.value) * 1000) / 1000;
+                fValue.value = interface.innerText;
+                sValue.value = "";
+                sign = divide.value;
+                sTransition = false;
+                break;
+            default:
+                return null;
+        }
+    }
+    if (interface.innerText.length > 21) {
         document.removeEventListener("keydown", numKeys)
     } else {
         document.addEventListener("keydown", numKeys)
-    }
-}
-function round() {
-    
-    if (!interface.innerText) {
-        return
-    } else {
-        console.log("Test")
-        Number(Math.round(interface.innerText));
     }
 }
 function valueInputs(btn) {
@@ -114,7 +126,7 @@ function valueInputs(btn) {
         interface.innerText += `${values}`;
         fValue.value += `${values}`;
     }
-    if (interface.innerText.length > 22) {
+    if (interface.innerText.length > 21) {
         for (let i=0; i<valueBtns.length; i++) {
             valueBtns[i].style.pointerEvents = "none"
         }
@@ -126,51 +138,44 @@ function sValueBtns(btn) {
     if (sTransition == false) { // If false, then 
         sTransition = true; // Switch to true and make sure the transition is through.
         interface.innerText = ""; // Set to nothing
-        console.log("Second Listener")
         interface.innerText += `${values}`; // Adds values from users input into interface
         sValue.value += `${values}`; // Stores input values into the second variable
     } else if (operator == true && sValue.value === "") {
         interface.innerText = "";
-        console.log("Display is refreshed")
         interface.innerText += `${values}`;
         sValue.value += `${values}`;
         
     } else {
-        console.log("Changes sign after clicking sign")
         interface.innerText += `${values}`;
         sValue.value += `${values}`;
     }
-    if (interface.innerText.length > 22) {
+    if (interface.innerText.length > 21) {
         for (let i=0; i<valueBtns.length; i++) {
             valueBtns[i].style.pointerEvents = "none"
+        }
+    } else {
+        for (let i=0; i<valueBtns.length; i++) {
+            valueBtns[i].style.pointerEvents = "auto"
         }
     }
 }
 function division(e) {
-    
-    
-    
     if (sign === "" && sValue.value === "" && switchFunc == false) {
-        console.log("Sign change");
         sign = "Divide"; // Change sign to divide
             valueBtns.forEach((btns) => {
                 btns.removeEventListener("click", valueInputs);
-                console.log("First Removed");
                 switchFunc = true;
                 secondBtns.forEach((btns) => {
                 btns.addEventListener("click", sValueBtns);
             })
         })
     } else if (sign === "Divide" && sValue.value !== "") { // If the sign is Divide again when clicked, solve
-        console.log("Second execute")
         interface.innerText = Number(fValue.value) / Number(sValue.value).toFixed(2);
         fValue.value = interface.innerText;
         sValue.value = "";
     } else if (sign !== "Divide" && sValue.value !== "") { // If the sign is not divide, then use a switch to find it
-        console.log("Checking for sign");
         switch (sign) { 
             case "Multiply":
-                console.log("Switch Multiply", sign)
                 interface.innerText = Number(fValue.value) * Number(sValue.value);
                 fValue.value = interface.innerText;
                 sValue.value = "";
@@ -195,30 +200,24 @@ function division(e) {
                 return null;
         }
     }
-    
 }
 function multiplication(e) {
     if (sign === "" && sValue.value === "" && switchFunc == false) {
-        console.log("Sign change")
         sign = "Multiply";
             valueBtns.forEach((btns) => {
                 btns.removeEventListener("click", valueInputs);
-                console.log("First Removed");
                 switchFunc = true;
                 secondBtns.forEach((btns) => {
                 btns.addEventListener("click", sValueBtns);
             })
         })
     } else if (sign === "Multiply" && sValue.value !== "") {
-        console.log("Third Multiply");
         interface.innerText = Number(fValue.value) * Number(sValue.value);
         fValue.value = interface.innerText;
         sValue.value = "";
     } else if (sign !== "Multiply" && sValue.value !== "") {
-        console.log("Checking for sign");
         switch (sign) {
             case "Divide":
-                console.log("Switch Multiply")
                 interface.innerText = Number(fValue.value) / Number(sValue.value);
                 fValue.value = interface.innerText;
                 sValue.value = "";
@@ -246,26 +245,21 @@ function multiplication(e) {
 }
 function subtraction(e) {
     if (sign === "" && sValue.value === "" && switchFunc == false) {
-        console.log("Sign change")
         sign = "Subtract";
             valueBtns.forEach((btns) => {
                 btns.removeEventListener("click", valueInputs);
-                console.log("First Removed");
                 switchFunc = true;
                 secondBtns.forEach((btns) => {
                 btns.addEventListener("click", sValueBtns);
             })
         })
     } else if (sign === "Subtract" && sValue.value !== "") {
-        console.log("Third Subtract");
         interface.innerText = Number(fValue.value) - Number(sValue.value);
         fValue.value = interface.innerText;
         sValue.value = "";
     } else if (sign !== "Subtract" && sValue.value !== "") {
-        console.log("Checking for sign");
         switch (sign) {
             case "Divide":
-                console.log("Switch Multiply")
                 interface.innerText = Number(fValue.value) / Number(sValue.value);
                 fValue.value = interface.innerText;
                 sValue.value = "";
@@ -293,26 +287,21 @@ function subtraction(e) {
 }
 function addition(e) {
     if (sign === "" && sValue.value === "" && switchFunc == false) {
-        console.log("Sign change")
         sign = "Addition";
             valueBtns.forEach((btns) => {
                 btns.removeEventListener("click", valueInputs);
-                console.log("First Removed");
                 switchFunc = true;
                 secondBtns.forEach((btns) => {
                 btns.addEventListener("click", sValueBtns);
             })
         })
     } else if (sign === "Addition" && sValue.value !== "") {
-        console.log("Third Addition");
         interface.innerText = Number(fValue.value) * Number(sValue.value);
         fValue.value = interface.innerText;
         sValue.value = "";
     } else if (sign !== "Addition" && sValue.value !== "") {
-        console.log("Checking for sign");
         switch (sign) {
             case "Divide":
-                console.log("Switch Multiply")
                 interface.innerText = Number(fValue.value) / Number(sValue.value);
                 fValue.value = interface.innerText;
                 sValue.value = "";
@@ -364,9 +353,13 @@ function clear() {
         btns.removeEventListener("click", sValueBtns);
         switchFunc = false;
         valueBtns.forEach((btns) => {
-            btns.addEventListener("click", valueInputs)
+            btns.addEventListener("click", valueInputs);
         })
     })
+    for (let i=0; i<valueBtns.length; i++) {
+        valueBtns[i].style.pointerEvents = "auto";
+    };
+    document.addEventListener("keydown", numKeys);
 }
 function changeSign() {
     if (Math.sign(interface.innerText) === -1 && switchFunc === false) {
@@ -383,5 +376,3 @@ function changeSign() {
         sValue.value = `${Math.abs(sValue.value)}`;
     } 
 }
-
-
