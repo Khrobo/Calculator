@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Iceland&display=swap');
+
 body {
     padding: 0;
     margin: 0;
     font-size: 20px;
+    font-family: Iceland;
 }
 
 .container {
@@ -78,20 +81,6 @@ body {
 .point:hover {
     background: #303030;
 }
-.top-btns:active {
+.colors:active {
     background: white;
 }
-.btn:active {
-    background: white;
-}
-.sign:active {
-    background: white;
-}
-.signs:active {
-    background: white;
-}
-.point:active {
-    background: white;
-}
-
-
